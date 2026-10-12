@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.vite/
+.env
+.env.local
+.env.*.local
+!.env.example
+!.env.local.example
+.DS_Store
+.vscode/
+.idea/
