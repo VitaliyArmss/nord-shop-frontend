@@ -1,4 +1,9 @@
-const API_BASE = (import.meta.env.VITE_API_URL || 'https://api.vitaliy-armss.ru/nord-shop/api').replace(/\/$/, '');
+// In production always use the canonical API URL. This intentionally ignores any stale
+// VITE_API_URL defined in GitHub repository/environment settings or an old .env.production.
+// Local development can override the API URL with VITE_API_URL in .env.local.
+const PRODUCTION_API_BASE = 'https://api.vitaliy-armss.ru/nord-shop/api';
+const DEVELOPMENT_API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5003/api';
+const API_BASE = (import.meta.env.PROD ? PRODUCTION_API_BASE : DEVELOPMENT_API_BASE).replace(/\/+$/, '');
 
 export async function apiRequest(path, options = {}) {
   const { token, headers, ...rest } = options;

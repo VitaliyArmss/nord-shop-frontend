@@ -30,8 +30,17 @@ jobs:
         run: npm install --no-fund
       - name: Build site
         run: npm run build
-        env:
-          VITE_API_URL: https://api.vitaliy-armss.ru/labspot/api
+      - name: Verify production paths and API URL
+        shell: bash
+        run: |
+          if ! grep -q -F '/nord-shop-frontend/assets/' dist/index.html; then
+            echo "::error::Built index.html does not contain the GitHub Pages asset base path."
+            exit 1
+          fi
+          if ! grep -R -q -F 'https://api.vitaliy-armss.ru/nord-shop/api' dist/assets; then
+            echo "::error::Production bundle does not contain the expected Nord-shop API URL."
+            exit 1
+          fi
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v4
         with:
